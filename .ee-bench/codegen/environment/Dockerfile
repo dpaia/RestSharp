@@ -55,6 +55,10 @@ RUN git clone https://github.com/{{ instance.owner }}/{{ instance.repo_name }}.g
 WORKDIR /app
 RUN git checkout {{ instance.base_commit }}
 
+RUN dotnet add "./test/RestSharp.Tests/RestSharp.Tests.csproj" package JUnitTestLogger --version 1.0.0 && \
+    dotnet add "./test/RestSharp.IntegrationTests/RestSharp.IntegrationTests.csproj" package JUnitTestLogger && \
+    dotnet build
+
 LABEL ee-bench.type="codegen"
 LABEL ee-bench.version="1.0"
 RUN rm -rf /app/.ee-bench/ 2>/dev/null || true
